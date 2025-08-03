@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Homely Spoon</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.95)),
+                  url('https://adflex.io/wp-content/uploads/2023/04/using-color-to-appeal-to-foodies.webp') no-repeat center center fixed;
+      background-size: cover;
+      color: #333;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      color: #ea580c;
+      font-size: 2rem;
+    }
+
+    nav a {
+      margin-left: 1.5rem;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #ffe8d0;
+      color: #ea580c;
+    }
+
+    section {
+      background-color: rgba(255, 255, 255, 0.599);
+      padding: 4rem 2rem;
+      margin: 2rem auto;
+      max-width: 1200px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    h2, h3 {
+      color: #ea580c;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+    }
+
+    .card-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    .dish-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      width: 300px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .dish-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .dish-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .dish-card h4 {
+      margin-bottom: 0.5rem;
+      color: #c2410c;
+    }
+
+    .card {
+      background: #ffffffe9;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .card img {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+    }
+
+    button {
+      background-color: #ea580c;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 5px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 0.5rem;
+      margin-right: 0.3rem;
+    }
+
+    button:hover {
+      background-color: #c2410c;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .center-text {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #555;
+      margin: 2rem 0;
+    }
+
+    .checkout-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    .checkout-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    footer {
+      background: rgba(255, 255, 255, 0.95);
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.95rem;
+      color: #666;
+      box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>The Homely Spoon</h1>
+    <nav>
+      <a href="#explore">Explore Dishes</a>
+      <a href="#dish">Dish Detail</a>
+      <a href="#checkout">Checkout</a>
+      <a href="#search">Search</a>
+    </nav>
+  </header>
+
+  <section id="explore">
+    <h2>Explore Dishes</h2>
+    <div class="card-container" id="dishCards"></div>
+  </section>
+
+  <section id="dish">
+    <h2>Dish Details</h2>
+    <div class="card" id="dishDetailCard">
+      <p class="center-text">Select a dish from "Explore Dishes" to view details here.</p>
+    </div>
+  </section>
+
+  <section id="checkout">
+    <h2>Checkout Summary</h2>
+    <div class="card" id="checkout-list">
+      <p class="center-text">Your cart is empty.</p>
+    </div>
+  </section>
+
+  <section id="search">
+    <h2>Search Dishes</h2>
+    <input type="text" id="searchInput" placeholder="Search by dish or chef name..." />
+    <div id="searchResults" class="card-container"></div>
+  </section>
+
+  <footer>
+    &copy; 2025 The Homely Spoon | Contact | FAQ | Terms & Privacy
+  </footer>
+
+  <script>
+    const dishes = [
+      {
+        name: 'Veg Biryani',
+        chef: 'Ayesha',
+        price: 150,
+        ingredients: 'Basmati Rice, Mixed Veggies, Spices',
+        description: 'Aromatic rice cooked with flavorful vegetables and spices.',
+        image: 'https://res.cloudinary.com/ddosmojpt/image/upload/v1754227896/Gemini_Generated_Image_7yzjlo7yzjlo7yzj_liexkr.png'
+      },
+      {
+        name: 'Chicken Curry',
+        chef: 'Rohan',
+        price: 220,
+        ingredients: 'Chicken, Onion Gravy, Spices',
+        description: 'Traditional chicken curry with rich and spicy gravy.',
+        image: 'https://res.cloudinary.com/ddosmojpt/image/upload/v1754228406/Gemini_Generated_Image_xxwtg3xxwtg3xxwt_fmj0yv.png'
+      },
+      {
+        name: 'Masala Dosa',
+        chef: 'Meera',
+        price: 90,
+        ingredients: 'Rice Batter, Potato Filling, Coconut Chutney',
+        description: 'Crispy dosa filled with spiced mashed potatoes.',
+        image: 'https://res.cloudinary.com/ddosmojpt/image/upload/v1754228400/Gemini_Generated_Image_xxwtg3xxwtg3xxwt_1_y0sqgl.png'
+      },
+      {
+        name: 'Palak Paneer',
+        chef: 'Kavita',
+        price: 180,
+        ingredients: 'Spinach, Paneer, Cream, Garlic',
+        description: 'Creamy spinach and cottage cheese dish packed with flavor.',
+        image: 'https://res.cloudinary.com/ddosmojpt/image/upload/v1754228409/Gemini_Generated_Image_xxwtg3xxwtg3xxwt_2_jyaamy.png'
+      },
+      {
+        name: 'Butter Chicken',
+        chef: 'Imran',
+        price: 250,
+        ingredients: 'Chicken, Tomato Cream Sauce, Butter',
+        description: 'Mildly spiced buttery chicken served with naan or rice.',
+        image: 'https://res.cloudinary.com/ddosmojpt/image/upload/v1754228397/Gemini_Generated_Image_xxwtg3xxwtg3xxwt_3_ks5o44.png'
+      },
+      {
+        name: 'Idli Sambhar',
+        chef: 'Anjali',
+        price: 80,
+        ingredients: 'Rice Cakes, Lentil Soup, Coconut Chutney',
+        description: 'Soft idlis served with flavorful sambhar and chutney.',
+        image: 'https://res.cloudinary.com/ddosmojpt/image/upload/v1754228409/Gemini_Generated_Image_xxwtg3xxwtg3xxwt_4_v5zcue.png'
+      }
+    ];
+
+    const cart = [];
+
+    function renderDishCards() {
+      const container = document.getElementById('dishCards');
+      container.innerHTML = dishes.map(dish => `
+        <div class="dish-card">
+          <img src="${dish.image}" alt="${dish.name}" />
+          <h4>${dish.name}</h4>
+          <p>By: Chef ${dish.chef}</p>
+          <p>Price: ₹${dish.price}</p>
+          <button onclick="addToCart('${dish.name}', ${dish.price}, '${dish.image}')">Add to Cart</button>
+          <button onclick="showDishDetail('${dish.name}')">Dish Details</button>
+        </div>
+      `).join('');
+    }
+
+    function addToCart(name, price, image) {
+      cart.push({ name, price, image });
+      updateCheckout();
+      alert(`${name} added to cart!`);
+    }
+
+    function updateCheckout() {
+      const checkoutDiv = document.getElementById("checkout-list");
+      if (cart.length === 0) {
+        checkoutDiv.innerHTML = '<p class="center-text">Your cart is empty.</p>';
+        return;
+      }
+
+      let html = "";
+      let total = 0;
+      cart.forEach((item, index) => {
+        html += `
+          <div class="checkout-item">
+            <img src="${item.image}" alt="${item.name}" />
+            <div>
+              <strong>${item.name}</strong><br>
+              ₹${item.price}
+            </div>
+          </div>
+        `;
+        total += item.price;
+      });
+
+      const delivery = 40;
+      html += `<p><strong>Delivery:</strong> ₹${delivery}</p>`;
+      html += `<p><strong>Total:</strong> ₹${total + delivery}</p>`;
+      html += `<button onclick="alert('Order confirmed!')">Confirm Order</button>`;
+      checkoutDiv.innerHTML = html;
+    }
+
+    function showDishDetail(dishName) {
+      const dish = dishes.find(d => d.name === dishName);
+      if (!dish) return;
+
+      const detail = document.getElementById('dishDetailCard');
+      detail.innerHTML = `
+        <h3>${dish.name}</h3>
+        <img src="${dish.image}" alt="${dish.name}" />
+        <p><strong>Chef:</strong> ${dish.chef}</p>
+        <p><strong>Price:</strong> ₹${dish.price}</p>
+        <p><strong>Ingredients:</strong> ${dish.ingredients}</p>
+        <p><strong>Description:</strong> ${dish.description}</p>
+        <button onclick="addToCart('${dish.name}', ${dish.price}, '${dish.image}')">Add to Cart</button>
+        <button onclick="showSection('#explore')">Back to Explore</button>
+      `;
+
+      showSection('#dish');
+    }
+
+    function showSection(id) {
+      const sections = document.querySelectorAll('section');
+      sections.forEach(sec => sec.classList.remove('active'));
+      const activeSection = document.querySelector(id);
+      if (activeSection) activeSection.classList.add('active');
+    }
+
+    function searchDishes(query) {
+      const searchDiv = document.getElementById('searchResults');
+      const results = dishes.filter(d =>
+        d.name.toLowerCase().includes(query) ||
+        d.chef.toLowerCase().includes(query)
+      );
+
+      if (results.length === 0) {
+        searchDiv.innerHTML = '<p class="center-text">No results found.</p>';
+        return;
+      }
+
+      searchDiv.innerHTML = results.map(dish => `
+        <div class="dish-card">
+          <img src="${dish.image}" alt="${dish.name}" />
+          <h4>${dish.name}</h4>
+          <p>By: Chef ${dish.chef}</p>
+          <p>Price: ₹${dish.price}</p>
+          <button onclick="addToCart('${dish.name}', ${dish.price}, '${dish.image}')">Add to Cart</button>
+          <button onclick="showDishDetail('${dish.name}')">Dish Details</button>
+        </div>
+      `).join('');
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderDishCards();
+
+      const links = document.querySelectorAll("nav a");
+      links.forEach(link => {
+        link.addEventListener("click", event => {
+          event.preventDefault();
+          showSection(link.getAttribute("href"));
+        });
+      });
+
+      document.getElementById("searchInput").addEventListener("input", e => {
+        searchDishes(e.target.value.toLowerCase());
+      });
+
+      showSection("#explore");
+    });
+  </script>
+</body>
+</html>
